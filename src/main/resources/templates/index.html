@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<form id="form">
+    username:<input type="text" name="username" value="123">
+    password:<input type="text" name="password" value="123">
+    username:<input type="text" name="round" value="1">
+</form>
+</body>
+<script>
+    $(function () {
+        var serialize = $("#form").serialize();
+        console.log("$(\"#form\").serialize():" + serialize);
+        console.log($.isPlainObject(serialize));
+
+        var paramArray = $('#form').serializeArray();
+        /*请求参数转json对象*/
+        var jsonArr = {};
+        $(paramArray).each(function () {
+            jsonArr[this.name] = this.value;
+        });
+        console.log(jsonArr);
+        console.log("jsonArr:" + $.isPlainObject(jsonArr));
+        var jsonStr = JSON.stringify(jsonArr);
+        console.log("jsonStr:" + $.isPlainObject(jsonStr));
+        //JSON.stringify(jsonArr)
+        var user = "123";
+        $.ajax({
+            type: "post",//必须是type
+            url: "http://localhost:8080/getJson",
+            data: JSON.stringify(jsonArr),
+            headers: {'Content-Type': 'application/json;charset=utf8'},
+            success: function (data) {
+                console.log(data);
+                console.log($.isPlainObject(data));
+            }
+        })
+    })
+</script>
+</html>
